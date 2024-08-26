@@ -1,5 +1,9 @@
 import java.util.Scanner;
 
+/**
+ * Represents the game logic for a Tic-Tac-Toe game.
+ * Handles player turns, checking for a winner or draw, and managing the game board.
+ */
 public class Game {
     private final PlayerOne playerOne;
     private final PlayerTwo playerTwo;
@@ -7,6 +11,13 @@ public class Game {
     private Player currentPlayer;
     private Player[][] grid;
 
+    /**
+     * Constructs a Game instance with two players and a scanner for input.
+     *
+     * @param playerOne The first player playing as "O"
+     * @param playerTwo The second player playing as "X"
+     * @param scanner The scanner used to capture user input.
+     */
     public Game(PlayerOne playerOne, PlayerTwo playerTwo, Scanner scanner) {
         this.playerOne = playerOne;
         this.playerTwo = playerTwo;
@@ -14,6 +25,10 @@ public class Game {
         this.currentPlayer = this.playerOne;
         this.grid = new Player[3][3];
     }
+
+    /**
+     * Requests a move from the current player, validates the input, and updates the game board.
+     */
     public void requestPlayerMove() {
         int row = this.getValidCoordinate("row");
         int column = this.getValidCoordinate("column");
@@ -28,6 +43,13 @@ public class Game {
         this.switchTurn();
 
     }
+
+    /**
+     * Gets a valid row or column coordinate from player.
+     *
+     * @param type *The type of coordinate to get ("row" or "column").
+     * @return The valid coordinate (1, 2 or 3) entered by the player.
+     */
     public int getValidCoordinate(String type) {
         int coordinate;
 
@@ -47,6 +69,10 @@ public class Game {
         }
         return coordinate;
     }
+
+    /**
+     * Switches turn of the players.
+     */
     public void switchTurn() {
         if (this.currentPlayer == this.playerOne) {
             this.currentPlayer = this.playerTwo;
@@ -55,9 +81,23 @@ public class Game {
         }
     }
 
+    /**
+     * Checks if the specified position on the grid is available.
+     *
+     * @param row The row index (0-2)
+     * @param column The column index (0-2)
+     * @return True if the position is available, false otherwise.
+     */
     public boolean isPositionAvailable(int row, int column) {
         return this.grid[row][column] == null;
     }
+
+    /**
+     * Checks if the game has been won by a player or if it has ended in a draw.
+     * If the player has won, announces the winner.
+     *
+     * @return True if the game is over (either by win or draw), false otherwise.
+     */
     public boolean checkForWinnerOrDraw() {
         Player winner = null;
         for (int i = 0; i < 3; i++) {
@@ -90,13 +130,27 @@ public class Game {
         System.out.println("It's a draw! Great game, try again to break the tie!");
         return true;
     }
+
+    /**
+     * Announces the winner and increases their score.
+     *
+     * @param winner The player who has won the game.
+     */
     public void announceWinner(Player winner) {
         winner.increaseScore();
         System.out.println("Congratulations, " + winner.getName() + "! You have won!");
     }
+
+    /**
+     * Resets the game board for a new game.
+     */
     public void resetGrid() {
         this.grid = new Player[3][3];
     }
+
+    /**
+     * Displays the current game board and the players scores.
+     */
     public void displayBoard() {
         System.out.println();
         System.out.println(this.playerOne.toString());
